@@ -9,7 +9,7 @@ class Evo:
 
     def __init__(self, img_src):
         self.goal = Image.open('./../art/{0}'.format(img_src))
-        self.poly_count = 20
+        self.poly_count = 50
         gene.Gene.set_max(self.goal.size)
         self.compare = compare.FitnessCalculator(self.goal)
         self.create_first_gen()
@@ -43,7 +43,7 @@ class Evo:
         return Image.new(
             'RGBA',
             self.goal.size,
-            (0, 0, 0, 120)
+            (0, 0, 0, 80)
         )
 
     def evolve(self):
@@ -85,7 +85,7 @@ class Evo:
         self.final.save("./../art/evo/final.jpg", "JPEG")
 
 
-new_evo = Evo('starry.jpg')
+new_evo = Evo('skull.jpeg')
 start = time.time()
-new_evo.generations(5000)
+new_evo.generations(100000)
 print time.time() - start

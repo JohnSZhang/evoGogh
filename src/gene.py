@@ -26,7 +26,7 @@ class Gene:
     @classmethod
     def create_coord(cls):
         corners = []
-        num_cor = randint(4,5)
+        num_cor = randint(3,5)
         for _ in range(num_cor):
             corners.append(cls.random_pt())
         return corners
@@ -47,18 +47,12 @@ class Gene:
         chance = randint(0, 100)
         points = len(self.dim)
 
-        if chance < 10:
-            new_point = Gene.random_pt()
-            self.dim.insert(
-                randint(0, points - 1),
-                new_point)
-
         if chance < 70:
             randpt = randint(0, points - 1)
             new_point = Gene.random_pt()
             self.dim[randpt] = new_point
 
-        if chance <= 60:
+        if chance <= 10:
             self.color = Gene.random_color()
 
         return self
