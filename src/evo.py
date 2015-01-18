@@ -12,20 +12,23 @@ class Evo:
         self.create_first_gen()
 
     def create_first_gen(self):
-        self.parent = Image.new(self.goal.mode, self.goal.size)
+        self.parent = Image.new("RGBA", self.goal.size, (0, 0, 0, 255))
         self.parent.save("./../art/evo/parent.jpg", "JPEG")
         self.best_fit = self.compare.test_new_img(self.parent)
 
     def evolve(self):
         self.child = self.parent
-        draw = ImageDraw.Draw(self.child)
+        layer = Image.new('RGBA', self.goal.size, (0,0,0,0))
+        draw = ImageDraw.Draw(layer)
         corners = self.create_poly()
         fill = self.random_color()
         draw.polygon(corners, fill)
+        self.child = Image.alpha_composite(self.child, layer)
 
     def create_poly(self):
         corners = []
-        for _ in range(4):
+        num_cor = randint(4,12)
+        for _ in range(num_cor):
             corners.append(self.random_pt())
         return corners
 
@@ -35,11 +38,15 @@ class Evo:
             randint(0, self.goal_y-1))
 
     def random_color(self):
-        return (randint(0,255), randint(0,255), randint(0,255))
+        return (
+            randint(0,255),
+            randint(0,255),
+            randint(0,255),
+            128)
 
     def fitness_test(self):
         fitness = self.compare.test_new_img(self.child)
-        if fitness >= self.best_fit:
+        if fitness <= self.best_fit:
             self.parent = self.child
             self.best_fit = fitness
 
@@ -51,7 +58,6 @@ class Evo:
 
 
 new_evo = Evo('starry.jpg')
-new_evo.create_first_gen()
 start = time.time()
-new_evo.generations(50000)
+new_evo.generations(200000)
 print time.time() - start
